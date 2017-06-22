@@ -1,0 +1,1 @@
+class solaris_providers ()

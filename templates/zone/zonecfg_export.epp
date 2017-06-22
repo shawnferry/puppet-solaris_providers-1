@@ -1,0 +1,45 @@
+  <%- |
+    Hash $zone_data,
+    Hash $fields
+  | -%>
+  <%# All non-comment printing lines start at column 1 -%>
+  <%# Lines with leading output are controlling whitespace -%>
+  <%# -%>
+  <%# -%>
+  <%# Always Create -%>
+create
+  <%# -%>
+  <%# Walk data and add properties-%>
+  <%# -%>
+<%# Add global level properties -%>
+  <%- $fields['global'].each |$prop| { -%>
+    <%- if $zone_data[$prop['name']] { -%>
+      <%# XXX Validation -%>
+<%= '' -%> set <%= $prop['name'] %>=<%= $zone_data[$prop['name']]%>
+    <%- } -%>
+  <%- } -%>
+<%# global END -%>
+<%# Walk each resource key and add resources if data exists for the resource -%>
+  <%- $fields.each |$rsrc_type,$hsh| { -%>
+    <%- if $rsrc_type != 'global' and $zone_data[$rsrc_type] { -%>
+        <%# Get each resource of type $rsrc_type and add it -%>
+        <%- $zone_data[$rsrc_type].each |$rsrc| { -%>
+<%= '' -%> add <%= $rsrc_type %>
+          <%- $hsh.each |$prop| { -%>
+            <%- if $rsrc[$prop['name']] { -%>
+                <%# XXX Validation -%>
+                <%# validation_func($prop['type'],$rsrc[$prop['name'] -%>
+<%= '  ' -%>    set <%= $prop['name'] %>=<%= $rsrc[$prop['name']] %>
+              <%- } -%>
+            <%- } -%>
+<%= '' -%> end
+      <%- } -%>
+    <%- } -%>
+  <%- } -%>
+<%# Walk END -%>
+<%# Add free form extra data -%>
+  <%- if $zone_data['zonecfg_extra'] { -%>
+<%= $zone_data['zonecfg_extra'] -%>
+  <%- } -%>
+<%# freeform END -%>
+  <%# commit is implied on exit -%>

@@ -1,0 +1,161 @@
+---
+  # zonecfg_export_fields provides a list of known fields from
+  # zonecfg(1) along with types for performing simple validation
+  #
+  # fields in the global array applied as 'set field=value'
+  # non-global array fields are applied as 'add key; set field=value;...; end'
+  #
+  # The special resource 'zonecfg_extra' will be added directly at the end of
+  # the generated zonecfg output
+  #
+  # Hiera side data is where global values are top level keys
+  # zones:
+  #  - <zonename>: <value>
+  #    <resource>:
+  #      - <property-name>: <value>
+  #    autoboot: true
+  #    capped-cpu:
+  #      - ncpus: 1
+  #    fs:
+  #      - dir: /mnt
+  #        special: /dev/dsk/c0t0d0s7
+  #        raw: /dev/rdsk/c0t0d0s7
+  #        type: ufs
+  #      - dir: ...
+  solaris_providers::zone::zonecfg_export_fields:
+    # <resource>:
+    # - name: <property-name>
+    #   type: <type>
+    global:
+      - name: zonename
+        type: simple
+      - name: zonepath
+        type: simple
+      - name: autoboot
+        type: simple
+      - name: bootargs
+        type: simple
+      - name: pool
+        type: simple
+      - name: limitpriv
+        type: simple
+      - name: brand
+        type: simple
+      - name: ip-type
+        type: simple
+      - name: hostid
+        type: simple
+      - name: cpu-shares
+        type: simple
+      - name: max-lwps
+        type: simple
+      - name: max-msg-ids
+        type: simple
+      - name: max-sem-ids
+        type: simple
+      - name: max-shm-ids
+        type: simple
+      - name: max-shm-memory
+        type: simple
+      - name: scheduling-class
+        type: simple
+      - name: fs-allowed
+        type: list-simple
+    fs:
+      - name: dir
+        type: simple
+      - name: special
+        type: simple
+      - name: raw
+        type: simple
+      - name: type
+        type: simple
+      - name: options
+        type: list-simple
+    net:
+      - name: address
+        type: simple
+      - name: allowed-address
+        type: list-simple
+      - name: configure-allowed-address
+        type: simple
+      - name: defrouter
+        type: list-simple
+      - name: physical
+        type: simple
+    anet:
+      - name: linkname
+        type: simple
+      - name: lower-link
+        type: simple
+      - name: allowed-address
+        type: list-simple
+      - name: configure-allowed-address
+        type: simple
+      - name: defrouter
+        type: list-simple
+      - name: mac-address
+        type: simple
+      - name: mac-slot
+        type: simple
+      - name: mac-prefix
+        type: simple
+      - name: mtu
+        type: simple
+      - name: maxbw
+        type: simple
+      - name: priority
+        type: simple
+      - name: vlan-id
+        type: simple
+      - name: rxfanout
+        type: simple
+      - name: rxrings
+        type: simple
+      - name: txrings
+        type: simple
+      - name: link-protection
+        type: list-simple
+      - name: allowed-dhcp-cids
+        type: list-simple
+    device:
+      - name: match
+        type: simple
+    rctl:
+      - name: name
+        type: simple
+      - name: value
+        type: list-complex
+    # ATTR is special
+    attr:
+      - name: name
+        type: simple
+      - name: type
+        type: simple
+      - name: value
+        type: simple
+    dataset:
+      - name: name
+        type: simple
+      - name: alias
+        type: simple
+    dedicated-cpu:
+      - name: ncpus
+        type: simple-range
+      - name: importance
+        type: simple
+    capped-memory:
+      - name: physical
+        type: simple-scale
+      - name: swap
+        type: simple-scale
+      - name: locked
+        type: simple-scale
+    capped-cpu:
+      - name: ncpus
+        type: simple
+    admin:
+      - name: user
+        type: simple
+      - name: auths
+        type: list-simple
