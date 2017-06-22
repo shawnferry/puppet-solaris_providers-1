@@ -1,0 +1,43 @@
+# These values are used to test epp rendering
+# this is not a valid format for use with puppet directly
+zone_data:
+  zonename: foo
+  autoboot: true
+  capped-cpu:
+    - ncpus: 1
+  fs:
+    - dir: /mnt
+      special: /dev/dsk/c0t0d0s7
+      raw: /dev/rdsk/c0t0d0s7
+      type: ufs
+  zonecfg_extra: |
+    Random extra text
+    this might do soemthing
+# This is only a subset of field data
+fields:
+    global:
+      - name: zonename
+        type: simple
+      - name: zonepath
+        type: simple
+      - name: autoboot
+        type: simple
+    fs:
+      - name: dir
+        type: simple
+      - name: special
+        type: simple
+      - name: raw
+        type: simple
+      - name: type
+        type: simple
+      - name: options
+        type: list-simple
+    capped-cpu:
+      - name: ncpus
+        type: simple
+    admin:
+      - name: user
+        type: simple
+      - name: auths
+        type: list-simple
