@@ -1,1 +1,1 @@
-class solaris_providers ()
+class solaris_providers {}
