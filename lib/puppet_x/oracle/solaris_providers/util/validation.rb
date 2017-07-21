@@ -34,7 +34,7 @@ module PuppetX::Oracle::SolarisProviders::Util::Validation
 
   def valid_ip?(value)
     begin
-      IPAddr.new(value)
+        IPAddr.new(value)
     rescue
       return false
     end
@@ -43,19 +43,42 @@ module PuppetX::Oracle::SolarisProviders::Util::Validation
 
   def valid_ipv4?(value)
     begin
-      return false unless IPAddr.new(value).ipv4?
+      IPAddr.new(value).ipv4?
     rescue
       return false
     end
-    return true
   end
 
   def valid_ipv6?(value)
     begin
-      return false unless IPAddr.new(value).ipv6?
+      IPAddr.new(value).ipv6?
     rescue
       return false
     end
-    return true
+  end
+
+  def valid_uuid?(value)
+    value =~ %r(\h{8}-(\h{4}-){3}\h{12})
+  end
+
+  def valid_macaddr?(value)
+    value =~ %r(\h{2}(:\h{2}){5})
+  end
+
+  def valid_multicast?(value)
+   begin
+      test_addr = IPAddr.new(value)
+    rescue
+      return false
+    end
+    begin
+      if test_addr.ipv4?
+        IPAddr.new('224.0.0.0/4').include?(test_addr)
+      else
+        IPAddr.new('FF00::/8').include?(test_addr)
+      end
+    rescue
+      return false
+    end
   end
 end

@@ -66,8 +66,8 @@ Puppet::Type.type(:evs_properties).provide(:solaris) do
           uplink_ports << val
         when "uri-template"
           value.gsub! "%colon%", ":"
-          host = "" if host == nil
-          val = [value,host].join(';')
+          host = '' if host == nil
+          val = [value,host].join
           uri_templates << val
         when "vlan-range"
           control_props[:vlan_range] = value

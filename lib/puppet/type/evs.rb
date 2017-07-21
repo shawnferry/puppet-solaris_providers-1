@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2015, Oracle and/or its affiliates. All rights reserved.
+# Copyright (c) 2015, 2017, Oracle and/or its affiliates. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,12 @@
 # limitations under the License.
 #
 
+require 'puppet/property/list'
 Puppet::Type.newtype(:evs) do
-  @doc = "Manage the configuration of Oracle Solaris Elastic Virtual Switch
-           (EVS)"
+  @doc = "Create and manage the configuration of Oracle Solaris Elastic Virtual Switch
+           (EVS).
+
+           Properties explicitly set for a VPORT override these values"
 
   ensurable
   newparam(:name) do
@@ -31,44 +34,73 @@ Puppet::Type.newtype(:evs) do
 
   ## read/write properties (always updatable) ##
   newproperty(:maxbw) do
-    desc "The full duplex bandwidth for the virtual port"
+    desc "The full duplex bandwidth for the virtual port. Default Unit Mbps"
+    newvalues(%r(^\d+[kmgKMG]$|^\d+$))
   end
 
   newproperty(:priority) do
     desc "The relative priority for the virtual port"
-    newvalues("high", "medium", "low", "")
+    defaultto :medium
+    newvalues(*%i[high medium low])
   end
 
-  newproperty(:protection) do
+  # tenant read only property
+
+  newproperty(:protection, :array_matching => :all,
+              :parent => Puppet::Property::List) do
     desc "Enables one or more types of link protection"
-    # verify protection value: comma(,) separatable
-    validate do |value|
-      value.split(",").collect do |each_val|
-        if not ["mac-nospoof", "restricted", "ip-nospoof",
-                "dhcp-nospoof", "none", ""].include? each_val
-          fail "Invalid value \"#{each_val}\". "\
-                               "Valid values are mac-nospoof, restricted, "\
-                               "ip-nospoof, dhcp-nospoof, none."
-        end
-      end
+    defaultto %i[mac-nospoof ip-nospoof]
+    newvalues(*%i[mac-nospoof restricted ip-nospoof dhcp-nospoof none])
+    def should
+      @should
     end
   end
 
   ## read-only properties (settable upon creation) ##
   newproperty(:l2_type) do
-    desc "Define how an EVS will be implemented across machines"
-    newvalues("vlan", "vxlan", "flat", "")
+    desc "Layer 2 type"
+    defaultto :vlan
+    newvalues(*%i[vlan vxlan flat])
   end
 
   newproperty(:vlanid) do
-    desc "VXLAN segment ID used to implement the EVS"
+    desc "Default VLAN ID (tag) for this EVS. 1-4094"
+    newvalues(%r(^\d+$))
+    validate do |val|
+      unless val.kind_of?(Integer)
+        fail "#{val} must be an integer"
+      end
+      unless (1..4094).cover?(val)
+        fail "${val} must be between 1-4094 inclusive"
+      end
+    end
   end
 
   newproperty(:vni) do
-    desc "VLAN ID used to implement the EVS"
+    desc "VXLAN Network Identifier (VNI) segment used to implement the EVS. 0-16777215"
+    newvalues(%r(^\d+$))
+    validate do |val|
+      unless val.kind_of?(Integer)
+        fail "#{val} must be an integer"
+      end
+      unless (0..16777215).cover?(val)
+        fail "${val} must be between 0-16777215 inclusive"
+      end
+    end
   end
 
   newproperty(:uuid) do
     desc "UUID of the EVS instance"
+    validate do |val|
+      unless val =~ %r(\h{8}-(\h{4}-){3}\h{12})
+        fail "#{val} does not look like a UUID"
+      end
+    end
+  end
+
+  validate do
+    if self[:protection].include?(:none) && self[:protection].length > 1
+      fail "cannot specify none with other protections"
+    end
   end
 end
