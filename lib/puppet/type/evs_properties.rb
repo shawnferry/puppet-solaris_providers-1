@@ -34,7 +34,7 @@ Puppet::Type.newtype(:evs_properties) do
     desc "Define how an EVS will be implemented across machines
          (controller_property)"
     defaultto :vlan
-    newvalues(*%i[vlan vxlan flat])
+    newvalues(:vlan, :vxlan, :flat)
   end
 
 
@@ -366,7 +366,7 @@ Puppet::Type.newtype(:evs_properties) do
     desc "IP version of the address for VXLAN datalinks "\
       "(controller_property)"
     defaultto :v4
-    newvalues(*%i(v4 v6))
+    newvalues(:v4, :v6)
   end
 
   newproperty(:vxlan_mgroup) do

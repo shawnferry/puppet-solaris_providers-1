@@ -59,13 +59,13 @@ Puppet::Type.newtype(:evs_vport) do
   newproperty(:priority) do
     desc "Relative priority of virtual port"
     defaultto :medium
-    newvalues(*%i[high medium low])
+    newvalues(:high, :medium, :low)
   end
 
   newproperty(:protection, :array_matching => :all, :parent => Puppet::Property::List) do
     desc "Enables one or more types of link protection"
-    defaultto %i[mac-nospoof ip-nospoof]
-    newvalues(*%i[mac-nospoof restricted ip-nospoof dhcp-nospoof none])
+    defaultto [:"mac-nospoof", :"ip-nospoof"]
+    newvalues(:"mac-nospoof", :restricted, :"ip-nospoof", :"dhcp-nospoof", :none)
     def should
       @should
     end

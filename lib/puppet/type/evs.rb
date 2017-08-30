@@ -41,7 +41,7 @@ Puppet::Type.newtype(:evs) do
   newproperty(:priority) do
     desc "The relative priority for the virtual port"
     defaultto :medium
-    newvalues(*%i[high medium low])
+    newvalues(:high, :medium, :low)
   end
 
   # tenant read only property
@@ -49,8 +49,8 @@ Puppet::Type.newtype(:evs) do
   newproperty(:protection, :array_matching => :all,
               :parent => Puppet::Property::List) do
     desc "Enables one or more types of link protection"
-    defaultto %i[mac-nospoof ip-nospoof]
-    newvalues(*%i[mac-nospoof restricted ip-nospoof dhcp-nospoof none])
+    defaultto [:"mac-nospoof", :"ip-nospoof"]
+    newvalues(:"mac-nospoof", :restricted, :"ip-nospoof", :"dhcp-nospoof", :none)
     def should
       @should
     end
@@ -60,7 +60,7 @@ Puppet::Type.newtype(:evs) do
   newproperty(:l2_type) do
     desc "Layer 2 type"
     defaultto :vlan
-    newvalues(*%i[vlan vxlan flat])
+    newvalues(:vlan, :vxlan, :flat)
   end
 
   newproperty(:vlanid) do
