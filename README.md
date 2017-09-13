@@ -15,8 +15,12 @@
 ## Overview
 
 The Oracle Solaris Providers module includes Solaris-specific implementations of
-types and providers.  These include some common features as well as features
+types and providers. These include some common features as well as features
 found exclusively on Oracle Solaris.
+
+This is a direct fork of the presumably abandonded provider puboished by Oracle.
+Beyond simple naming and metadata changes this is identical to the provider
+shipped natively with Solaris 11 SRU 23.
 
 ## Module Description
 
@@ -34,17 +38,17 @@ Many more types and providers will be added in the future.
 
 The naming providers included in this module make changes to the SMF properties of the following services:
 
-svc:/network/dns/client  
-svc:/network/ldap/client  
-svc:/network/nis/client  
-svc:/network/nis/domain  
+svc:/network/dns/client
+svc:/network/ldap/client
+svc:/network/nis/client
+svc:/network/nis/domain
 
 The package providers modify the configuration of IPS.
 
 ### Beginning with solaris_providers
 
-For Solaris 11.x puppet module install oracle-solaris_providers  
-For Solaris 12.x pkg install puppet/oracle-solaris_providers  
+For Solaris 11.x puppet module install oracle-solaris_providers
+For Solaris 12.x pkg install puppet/oracle-solaris_providers
 
 ## Usage
 
@@ -56,10 +60,10 @@ providers: dns, ldap, nis, pkg_facet, pkg_mediator, pkg_publisher, pkg_variant
 The naming providers interact with SMF properties of the following
 services using the svcprop(1) command:
 
-svc:/network/dns/client  
-svc:/network/ldap/client  
-svc:/network/nis/client  
-svc:/network/nis/domain  
+svc:/network/dns/client
+svc:/network/ldap/client
+svc:/network/nis/client
+svc:/network/nis/domain
 
 The package providers interact with IPS using the pkg(1) command.
 
@@ -71,4 +75,3 @@ These modules were created for use on Oracle Solaris 11 and 12.
 
 Contributors should issue pull requests via Github.  See the project page at:
 https://github.com/oraclesolaris/puppet-module
-
