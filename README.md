@@ -20,6 +20,10 @@ The Oracle Solaris Providers module includes Solaris-specific implementations of
 types and providers. These include some common features as well as features
 found exclusively on Oracle Solaris.
 
+This is a direct fork of the presumably abandonded provider puboished by Oracle.
+Beyond simple naming and metadata changes this is identical to the provider
+expected to ship natively with Solaris 11.4/11.next
+
 ## Module Resource Type Reference
 
 The Oracle Solaris Providers module currently enables configuration of the
@@ -114,4 +118,3 @@ Contributors should issue pull requests via Github see [contributing](CONTRIBUTI
 Package installation is via Puppet Core package provider
 
 Solaris providers are shipped with Solaris in the oracle-solaris_providers IPS package and installed automatically with puppet. Use of the module from the Puppet Forge is possible. However, it will result in errors from pkg verify as the IPS oracle-solaris_providers package cannot be removed.
-

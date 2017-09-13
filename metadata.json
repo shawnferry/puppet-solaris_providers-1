@@ -1,16 +1,16 @@
 {
-  "name": "oracle-solaris_providers",
+  "name": "shawnferry-solaris_providers",
   "version": "2.0.1",
-  "author": "Oracle",
+  "author": "Oracle/Shawn Ferry",
   "summary": "Oracle Solaris Providers",
   "license": "Apache-2.0",
-  "source": "https://github.com/oraclesolaris/puppet-solaris_providers",
-  "project_page": "https://github.com/oraclesolaris/puppet-solaris_providers",
+  "source": "https://github.com/shawnferry/puppet-solaris_providers",
+  "project_page": "https://github.com/shawnferry/puppet-solaris_providers",
   "issues_url": "https://support.oracle.com",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_range": "4.7.x"
+      "version": ">= 4.7.0 < 5.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -18,7 +18,7 @@
             "operatingsystem": "Solaris",
             "operatingsystemrelease": [
                 "11",
-                "12"
+                "11.4"
             ]
         }
     ],
