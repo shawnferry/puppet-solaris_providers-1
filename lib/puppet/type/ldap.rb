@@ -347,7 +347,7 @@ Puppet::Type.newtype(:ldap) do
     end
   end
 
-  newproperty(:service_search_descriptor) do
+  newproperty(:service_search_descriptor, :parent => Puppet::Property::List) do
     desc "How and where LDAP should search for information for a particular
               service"
     class << self
@@ -355,8 +355,25 @@ Puppet::Type.newtype(:ldap) do
       attr_accessor :prop_type
     end
     self.pg = "config"
-    self.prop_type = :astring
+    self.prop_type = :array
+
+    # ensure should remains an array
+    def should
+      @should
+    end
+
+    def insync?(is)
+      is = [] if is == :absent or is.nil?
+      is.sort == self.should.sort
+    end
+
+    # svcprop returns multivalue entries delimited with a space
+    def delimiter
+      " "
+    end
+
   end
+
 
   newproperty(:bind_dn, :parent => Puppet::Property::List) do
     desc "An entry that has read permission for the requested database.
